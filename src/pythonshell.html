@@ -13,48 +13,55 @@ f<!--
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<script type="text/x-red" data-template-name="pythonshell in">
-  <div class="form-tips"><p>Provide a python file with full path</p>
-  
+<script type="text/x-red" data-template-name="pythonshell">
+  <div class="form-tips"><p>Provide full path to python interpreter and script file.</p>
   <div class="form-row">
     <label for="node-input-name"><i class="fa fa-tag"></i> Name </label>
     <input type="text" id="node-input-name">
   </div>
   <div class="form-row">
-    <label for="node-input-pyfile"><i class="fa fa-tag"></i> Py file </label>
-    <input type="text" id="node-input-pyfile" placeholder="/home/user/x.py">
+      <label for="node-input-pyexe"><i class="fa fa-tag"></i> python.exe </label>
+      <input type="text" id="node-input-pyexe" placeholder="C:/Program Files/Python37/python.exe">
+    </div>
+  <div class="form-row">
+    <label for="node-input-pyfile"><i class="fa fa-tag"></i> .py Script </label>
+    <input type="text" id="node-input-pyfile" placeholder="C:/Users/admin/Desktop/hello.py">
   </div>
   <div class="form-row">
-    <label for="node-input-virtualenv"><i class="fa fa-tag"></i> Virtual Environment Path </label>
-    <input type="text" id="node-input-virtualenv" placeholder="/home/user/venv">
+    <label for="node-input-wdir"><i class="fa fa-tag"></i> Work Dir </label>
+    <input type="text" id="node-input-wdir" placeholder="C:/Users/admin/Desktop/Python/wdir/">
   </div>
   <div class="form-row">
     <label>Continuous?</label>
     <input type="checkbox" id="node-input-continuous" style="display: inline-block; width: auto; vertical-align: top;">
   </div>
   <div class="form-row">
-    <label>Stdin Input?</label>
+    <label>Std Input?</label>
     <input type="checkbox" id="node-input-stdInData" style="display: inline-block; width: auto; vertical-align: top;">
   </div>
 
   <div class="form-tips">
     <p>
-      <b>Continuous:</b> this means the script will continuously produce data (good for trigger once, run forever scripts). This option will always be checked if Stdin Input is checked.
+      <b>python.exe:</b> the absolute path of the python interpreter. In unix systems should be something like: /usr/bin/python. This way user as more control in which process to execute (for instance different interpreters in the same machine: python2 and python3) as well allows users to launch the interpreter directly from any virtual environment.
     </p>
     <p>
-      <b>Stdin Input:</b> when this is checked, input to the node will be fed to the stdin of the scripts. That is, one the very first input, the script will be launched and wait for data from its stdin.
+      <b>.py Script:</b> the absolute path of the python script file to run. It is set to be independent of any initial working directory selected.
+    </p>
+    <p>
+      <b>Work Dir:</b> the absolute path for the initial/current working directory. This option allows users to wirte relative paths inside the py scripts without difficulty.
+    </p>
+    <p>
+      <b>Continuous:</b> the script will continuously produce data (good for trigger once, run forever scripts). This option will always be checked if Stdin Input is checked.
+    </p>
+    <p>
+      <b>Std Input:</b> the input to the node will be fed to the stdin of the scripts. That is, one the very first input, the script will be launched and wait for data from its stdin.
     </p>
   </div>
 
 </script>
 
-<script type="text/x-red" data-help-name="pythonshell in">
-    <p>This node interacts with a python process, it run a python script and treats input payload as the arguments of the script. Script output will be forwarded to the node output</p>
-
-    <p>
-      Virtual environment can be used, please specify the path to it.
-    </p>
-
+<script type="text/x-red" data-help-name="pythonshell">
+    <p>This node interacts with a python process by executing an child process running python.exe as command with the python script as arguments and treats input payload as the arguments of the script. Script output will be forwarded to the node output.</p>
     <p>
       <b>
         Note:
@@ -79,22 +86,23 @@ f<!--
 
 <script type="text/javascript">
 
-  RED.nodes.registerType('pythonshell in',{
-    category: 'input',
+  RED.nodes.registerType('pythonshell',{
+    category: 'advanced',
     defaults: {
       name: {required: false},
+      pyexe: {required: true},
       pyfile: {required: true},
-      virtualenv: {required: false},
+      wdir: {required: false},
       continuous: {required: false},
       stdInData: {required: false}
     },
-    color:"#1c4e63",
+    color:"#33cc33",
     inputs: 1,
-    outputs:1,
-    icon: "bridge.png",
+    outputs: 1,
+    icon: "py.png",
     align: "left",
     label: function() {
-        return this.name || "pythonshell in";
+        return this.name || "pythonshell";
     },
     labelStyle: function() {
       return this.name ? "node_label_white_italic" : "node_label_white";
