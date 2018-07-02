@@ -6,7 +6,7 @@ matrix:
       script:
         - ./node_modules/.bin/grunt && istanbul report text && ( cat coverage/lcov.info | $(npm get prefix)/bin/coveralls || true ) && rm -rf coverage
       before_script:
-        - apt-get install python
+        - apt2 install python
         - npm install -g node-red
         - npm install -g istanbul coveralls
     - node_js: "8"
