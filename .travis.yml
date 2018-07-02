@@ -1,4 +1,3 @@
-sudo: false
 language: node_js
 matrix:
   include:
@@ -6,7 +5,7 @@ matrix:
       script:
         - ./node_modules/.bin/grunt && istanbul report text && ( cat coverage/lcov.info | $(npm get prefix)/bin/coveralls || true ) && rm -rf coverage
       before_script:
-        - apt2 install python
+        - apt install python
         - npm install -g node-red
         - npm install -g istanbul coveralls
     - node_js: "8"
