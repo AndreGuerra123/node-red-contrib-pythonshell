@@ -1,13 +1,10 @@
 language: node_js
 matrix:
   include:
-    - node_js: "10"
-      script:
-        - ./node_modules/.bin/grunt && istanbul report text && ( cat coverage/lcov.info | $(npm get prefix)/bin/coveralls || true ) && rm -rf coverage
+    - node_js: "stable"
       before_script:
         - apt install python
-        - npm install -g node-red
-        - npm install -g istanbul coveralls
-    - node_js: "8"
-    - node_js: "6"
-    - node_js: "4"
+        - npm install -g mocha istanbul coveralls mocha-lcov-reporter --save-dev
+      after_success:
+        - npm run coveralls
+    
